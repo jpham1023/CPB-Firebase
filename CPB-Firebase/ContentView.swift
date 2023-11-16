@@ -8,15 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var viewmodel = collegeViewModel()
+    @State var name = ""
+    @State var location = ""
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Text("College Lists")
+        NavigationStack{
+            List{
+                ForEach(viewmodel.myarray, id:\.self){ currentCollege in
+                    Text(currentCollege.collegename)
+                    Text(currentCollege.location)
+                    
+                
+                }
+                NavigationLink("Add college") {
+                   NavView()
+                }
+                
+                
+            }
         }
-        .padding()
     }
+    
+    
 }
 
 #Preview {
