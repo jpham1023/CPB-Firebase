@@ -15,6 +15,7 @@ class collegeViewModel: ObservableObject{
         pullFromFirebase()
     }
     
+    
     func addToArray(currentCollege:College){
         myarray.append(currentCollege)
         addToFirebase(college: currentCollege)
@@ -28,22 +29,24 @@ class collegeViewModel: ObservableObject{
     }
     func pullFromFirebase(){
         let databaseref = Database.database().reference().child("Colleges")
-        databaseref.getData(){myError,myDataSnapshot in
-            var newarray: [College] = []
-            print(myDataSnapshot)
-            print(myError)
+        databaseref.getData {myError,myDataSnapshot in
+        var newarray: [College] = []
+            //print(myDataSnapshot)
+            
             for college in myDataSnapshot?.children.allObjects as! [DataSnapshot]{
-                let name = college.key
-                let dict = college.value as! [String: String]
+                print(college)
+             // print(myError)
+            let name = college.key
+               guard let dict = college.value as? [String: Any] else{return}
                 guard let location = dict["location"] else{return}
-                guard let students = dict["numberOfStudents"] else{return}
+                guard let students = dict["students"] else{return}
                 guard let webpage = dict["webpage"] else{return}
-                let newCollege = College(collegename: name, location: location, numberOfStudents: students, webpage: webpage)
-                newarray.append(newCollege)
-                
+               newarray.append(College(collegename: name, location: location as! String, numberOfStudents: students as! String, webpage: webpage as! String))
+               //print(newarray)
             }
             self.myarray = newarray
-            
-        }
+          
+    
+           }
     }
 }

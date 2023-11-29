@@ -8,27 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var viewmodel = collegeViewModel()
-    @State var name = ""
-    @State var location = ""
+    @EnvironmentObject var viewmodel: collegeViewModel
     var body: some View {
         Text("College Lists")
         NavigationStack{
             List{
-                ForEach(viewmodel.myarray, id:\.self){ currentCollege in
-                    Text(currentCollege.collegename)
-                    Text(currentCollege.location)
-                    
                 
+                ForEach(viewmodel.myarray, id:\.collegename){ currentCollege in
+                    VStack{
+                        Text(currentCollege.collegename)
+                        Text(currentCollege.numberOfStudents)
+                        
+                    }
                 }
                 NavigationLink("Add college") {
-                   NavView()
+                    NavView()
                 }
                 
                 
             }
+            
         }
     }
+    
     
     
 }
